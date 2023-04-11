@@ -1,0 +1,163 @@
+#include <iostream>
+#include <cmath>
+
+double fun(double x);
+double fun1(double x);
+void M1(float a, float b, float eps);
+void M2(float a, float b, float eps);
+
+
+using namespace std;
+int main()
+{
+	setlocale(LC_ALL, "RUS");
+	int number = 0;
+	float a, b, eps,f, f1, f2, fz, n=0, t, x, z, h;
+
+	cout << "**********************************************" << endl
+		<< "*               Выберите задание:             *" << endl
+		<< "* 1. Задание 1. Метод деления отрезка пополам *" << endl
+		<< "* 2. Задание 1. Метод хорд                    *" << endl
+		<< "* 3. Выход из задания                         *" << endl
+		<< "***********************************************" << endl;
+	
+	while (number !=3)
+	{
+		cout << endl << "Что хотите сделать? Выберите нужный пункт:" << endl;
+		cin >> number;
+		switch (number)
+		{
+		case 1:
+			cout << "Введите 2 значения аргументов и значение погрешности:" << endl;
+			cin >> a >> b >> eps;
+			M1(a, b, eps);
+			break;
+
+		case 2:
+			cout << "Введите 2 значения аргументов и значение погрешности:" << endl;
+			cin >> a >> b >> eps;
+			M2(a, b, eps);
+			break;
+
+		case 3:
+			cout << "Вы вышли из 1 задания" << endl;
+			break;
+
+		default:
+			cout << "Введен некорректный пункт" << endl;
+			break;
+		}
+	}
+
+	
+}
+
+double fun(double x)
+{
+	double res;
+	res = 2 * exp(x) - 5 * x - 2;
+	return res;
+}
+
+double fun1(double x)
+{
+	double res;
+	res = 2 * exp(x);
+	return res;
+}
+
+void M1(float a, float b, float eps)
+{
+	int n;
+	float f, f1, f2, t, x;
+	if (fun(a) * fun(b) < 0)
+	{
+		f1 = fun(a);
+		n = 1;
+		do
+		{
+			t = (a + b) / 2;
+			f2 = fun(t);
+			if (f1 * f2 < 0)
+				b = t;
+			else
+			{
+				a = t;
+				f1 = f2;
+			}
+			n++;
+		} while (abs(b - a) > eps);
+
+		x = (a + b) / 2;
+		f = fun(x);
+		cout << endl << "Значение аргумента: " << x << endl << "Значение функции: " << f << endl << "Количество проходов: " << n << endl;
+
+	}
+	else
+		cout << "На этом отрезке нет корней" << endl;
+	/*float t, f1, f2, x;
+	int n;
+
+	if (fun(a) * fun(b) < 0)
+	{
+		f1 = fun(a);
+		n = 1;
+		do
+		{
+			t = (a + b) / 2;
+			f2 = fun(t);
+			if (f1 * f2 < 0)
+			{
+				b = t;
+			}
+			else
+			{
+				a = t;
+				f1 = f2;
+			}
+			n++;
+		} while (abs(b - a) > eps);
+		x = (a + b) / 2;
+		cout << "x = " << x << " f = " << fun(x) << " n = " << n << endl;
+	}
+	else
+		cout << "На этом отрезке корней нет" << endl;*/
+}
+
+
+
+void M2(float a, float b, float eps)
+{
+	int n;
+	float f1, f2, fz, x, z, h;
+
+	if (fun(a) * fun(b) < 0)
+	{
+		f1 = fun(a);
+		f2 = fun1(a);
+		n = 1;
+		if (f1 * f2 > 0)
+		{
+			x = b;
+			z = a;
+		}
+		else
+		{
+			x = a;
+			z = b;
+		}
+		fz = fun(z);
+		do
+		{
+			f1 = fun(x);
+			h = (x - z) / (f1 - fz) * f1;
+			x -= h;
+			n++;
+		} while (abs(h) > eps);
+		f1 = fun(x);
+		cout << endl << "Значение аргумента: " << x << endl << "Значение функции 1: " << fun(x) << endl << "Количество проходов: " << n << endl;
+	}
+	else
+		cout << "На этом отрезке нет корней" << endl;
+}
+
